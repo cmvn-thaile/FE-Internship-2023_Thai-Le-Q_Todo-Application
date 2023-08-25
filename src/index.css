@@ -1,0 +1,113 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+ol,
+ul {
+  list-style: none;
+}
+body {
+  margin: 0;
+
+  background: rgb(251, 240, 178);
+  background: linear-gradient(
+    356deg,
+    rgba(251, 240, 178, 1) 12%,
+    rgba(254, 208, 222, 1) 47%,
+    rgba(202, 237, 255, 1) 84%
+  );
+  background-repeat: no-repeat;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+input[type="text"] {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+img {
+  width: 2rem;
+  margin: 0.75rem 0;
+  display: inline;
+}
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.app-title {
+  font-size: 60px;
+  padding: 32px 0;
+}
+
+.wrapper {
+  min-width: 500px;
+  padding: 2rem 2rem 1rem;
+  margin-bottom: 60px;
+  background-color: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2), 0 8px 0 -3px #f5f5f5,
+    0 9px 1px -3px rgba(0, 0, 0, 0.2), 0 16px 0 -6px #f5f5f5,
+    0 17px 2px -6px rgba(0, 0, 0, 0.2);
+}
+
+.todo-header {
+  padding: 1rem;
+  display: flex;
+  margin-bottom: 1rem;
+  height: 6vh;
+  justify-content: center;
+  align-items: center;
+  box-shadow: inset 0 -2px 1px rgba(0, 0, 0, 0.03);
+}
+
+.todo-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.todo-item > div {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.todo-footer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.todo-filter {
+  display: flex;
+  gap: 10px;
+}
+
+.todo-clear-completed {
+  cursor: pointer;
+}
+
+.active-icon {
+  cursor: pointer;
+}
+
+.active .all .completed {
+  cursor: pointer;
+}
