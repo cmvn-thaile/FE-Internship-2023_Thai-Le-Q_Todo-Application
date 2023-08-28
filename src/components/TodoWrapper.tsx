@@ -1,22 +1,23 @@
-import React, { useEffect, useState, useRef } from "react";
-import icTodo from "../assets/ic-todo.svg";
-import { nanoid } from "nanoid";
-import TodoCard from "./TodoCard";
-import { Todo } from "../services/type";
+import React, { useEffect, useState, useRef, useMemo } from 'react';
+import icTodo from '../assets/ic-todo.svg';
+import { nanoid } from 'nanoid';
+import TodoCard from './TodoCard';
+import { Todo } from '../type';
+import { completedTodo, deleteTodo } from '../services/todo-services';
 
 const TodoWrapper = () => {
   //create state for todos and input
   const [todos, setTodos] = React.useState<Todo[]>([]);
-  const [inputValue, setInputValue] = React.useState<string>("");
+  const [inputValue, setInputValue] = React.useState<string>('');
   //create state for editing
   const [editing, setEditing] = useState<string | null>(null);
-  const [editText, setEditText] = useState("");
+  const [editText, setEditText] = useState('');
   //create state for filter
-  const [filter, setFilter] = useState("all");
+  const [filter, setFilter] = useState('all');
 
   useEffect(() => {
     //get data from local storage
-    const storedTodos = localStorage.getItem("todos");
+    const storedTodos = localStorage.getItem('todos');
     if (storedTodos) {
       setTodos(JSON.parse(storedTodos));
     }
@@ -24,13 +25,13 @@ const TodoWrapper = () => {
 
   useEffect(() => {
     //save data to local storage when todos change
-    localStorage.setItem("todos", JSON.stringify(todos));
+    localStorage.setItem('todos', JSON.stringify(todos));
   }, [todos]);
 
   //submit form
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (inputValue.trim() !== "") {
+    if (inputValue.trim() !== '') {
       const newTodo = {
         id: nanoid(),
         todoContent: inputValue,
@@ -39,27 +40,23 @@ const TodoWrapper = () => {
 
       setTodos([...todos, newTodo]);
     }
-    setInputValue("");
+    setInputValue('');
   };
 
   //handle completed when click, function take id and return updated todos
   //have isCompleted = true if id match
   const handleCompleted = (id: string) => {
-    const updatedTodos = todos.map((todo) =>
-    todo.id === id ? { ...todo, isCompleted: !todo.isCompleted } : todo
-  );
-  setTodos(updatedTodos);
+    setTodos(completedTodo(id, todos));
   };
   //handle completed when click, function take id and return delete todo
   //if id match
   const handleDelete = (id: string) => {
-    const updatedTodos = todos.filter((todo) => todo.id !== id);
-    setTodos(updatedTodos);
+    setTodos(deleteTodo(id, todos));
   };
   //count uncompleted todos
-  const countUncompleted = () => {
+  const countUncompleted = useMemo(() => {
     return todos.filter((todo) => !todo.isCompleted).length;
-  };
+  }, [todos]);
 
   //clear completed todos
   const clearCompleted = () => {
@@ -69,12 +66,12 @@ const TodoWrapper = () => {
   //double click to edit
   const handleDoubleClick = (id: string) => {
     setEditing(id);
-    setEditText(todos.find((todo) => todo.id === id)?.todoContent || "");
+    setEditText(todos.find((todo) => todo.id === id)?.todoContent || '');
   };
 
   //check if enter key is pressed, update todos
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === "Enter") {
+    if (event.key === 'Enter') {
       const updatedTodos = todos.map((todo) =>
         todo.id === editing ? { ...todo, todoContent: editText } : todo
       );
@@ -92,33 +89,32 @@ const TodoWrapper = () => {
   };
 
   const filteredTodos = todos.filter((todo) => {
-    if (filter === "active") {
+    if (filter === 'active') {
       return !todo.isCompleted;
-    } else if (filter === "completed") {
+    } else if (filter === 'completed') {
       return todo.isCompleted;
     } else {
       return true;
     }
   });
   return (
-    <div className="wrapper">
-      <div className="toto-header">
-        <div className="todo-header">
-          <span>
-            <img src={icTodo} alt="Todo" />
-          </span>
-          <form onSubmit={handleSubmit}>
-            <input
-              type="text"
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-              placeholder="What need to be done?"
-            />
-          </form>
-        </div>
+    <div className='wrapper'>
+      <div className='todo-header'>
+        <span>
+          <img src={icTodo} alt='Todo' />
+        </span>
+        <form onSubmit={handleSubmit}>
+          <input
+            type='text'
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            placeholder='What need to be done?'
+          />
+        </form>
       </div>
-      <div className="todo-content">
-        <ul className="todo-list">
+
+      <div className='todo-content'>
+        <ul className='todo-list'>
           {filteredTodos.map((todo) => (
             <TodoCard
               todo={todo}
@@ -134,33 +130,33 @@ const TodoWrapper = () => {
           ))}
         </ul>
       </div>
-      <div className="todo-footer">
+      <div className='todo-footer'>
         <span>
-          {countUncompleted() > 1
-            ? `${countUncompleted()} items left`
-            : `${countUncompleted()} item left`}
+          {countUncompleted > 1
+            ? `${countUncompleted} items left`
+            : `${countUncompleted} item left`}
         </span>
-        <ul className="todo-filter">
+        <ul className='todo-filter'>
           <li
-            className={filter === "all" ? "active" : ""}
-            onClick={() => handleFilterChange("all")}
+            className={filter === 'all' ? 'filter active' : 'filter'}
+            onClick={() => handleFilterChange('all')}
           >
             All
           </li>
           <li
-            className={filter === "active" ? "active" : ""}
-            onClick={() => handleFilterChange("active")}
+            className={filter === 'active' ? 'filter active' : 'filter'}
+            onClick={() => handleFilterChange('active')}
           >
             Active
           </li>
           <li
-            className={filter === "completed" ? "active" : ""}
-            onClick={() => handleFilterChange("completed")}
+            className={filter === 'completed' ? 'filter active' : 'filter'}
+            onClick={() => handleFilterChange('completed')}
           >
             Completed
           </li>
         </ul>
-        <span className="todo-clear-completed" onClick={clearCompleted}>
+        <span className='todo-clear-completed' onClick={clearCompleted}>
           Clear Completed
         </span>
       </div>

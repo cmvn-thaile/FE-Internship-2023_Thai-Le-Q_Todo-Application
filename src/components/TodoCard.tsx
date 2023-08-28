@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Todo } from "../services/type";
-import icActive from "../assets/ic-active.svg";
-import icCompleted from "../assets/ic-completed.svg";
-import icDelete from "../assets/ic-delete.svg";
+import React, { useState, useEffect, useRef } from 'react';
+import { Todo } from '../type';
+import icActive from '../assets/ic-active.svg';
+import icCompleted from '../assets/ic-completed.svg';
+import icDelete from '../assets/ic-delete.svg';
 
 interface Props {
   todo: Todo;
@@ -42,17 +42,17 @@ const TodoCard = ({
     };
 
     const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
+      if (event.key === 'Escape') {
         setEditing(null);
       }
     };
 
-    document.addEventListener("mousedown", handleClickOutside);
-    document.addEventListener("keydown", handleEscape);
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('keydown', handleEscape);
 
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-      document.removeEventListener("keydown", handleEscape);
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleEscape);
     };
   }, []);
 
@@ -67,7 +67,7 @@ const TodoCard = ({
   return (
     <>
       <li
-        className="todo-item"
+        className='todo-item'
         key={todo.id}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
@@ -75,17 +75,17 @@ const TodoCard = ({
         <>
           <div>
             <span
-              className="active-icon"
+              className='active-icon'
               onClick={() => handleCompleted(todo.id)}
             >
               <img
                 src={todo.isCompleted ? icCompleted : icActive}
-                alt="todo status"
+                alt='todo status'
               />
             </span>
             {editing === todo.id ? (
               <input
-                type="text"
+                type='text'
                 value={editText}
                 onChange={handleEdit}
                 onKeyDown={handleKeyDown}
@@ -93,14 +93,17 @@ const TodoCard = ({
                 autoFocus
               />
             ) : (
-              <span onDoubleClick={() => handleDoubleClick(todo.id)}>
+              <span
+                className='todo-content'
+                onDoubleClick={() => handleDoubleClick(todo.id)}
+              >
                 {todo.todoContent}
               </span>
             )}
           </div>
           {showDelete && (
-            <span className="active-icon" onClick={() => handleDelete(todo.id)}>
-              <img src={icDelete} alt="cancel icon" />
+            <span className='active-icon' onClick={() => handleDelete(todo.id)}>
+              <img src={icDelete} alt='cancel icon' />
             </span>
           )}
         </>
