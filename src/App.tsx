@@ -4,10 +4,10 @@ import TodoWrapper from './components/TodoWrapper';
 
 function App() {
   return (
-    <div className='app'>
-      <h1 className='app-title'>
+    <div className="app">
+      <h1 className="app-title">
         Todo
-        <span role='img' aria-label='...'>
+        <span role="img" aria-label="...">
           📝
         </span>
       </h1>

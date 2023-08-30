@@ -98,23 +98,23 @@ const TodoWrapper = () => {
     }
   });
   return (
-    <div className='wrapper'>
-      <div className='todo-header'>
+    <div className="wrapper">
+      <div className="todo-header">
         <span>
-          <img src={icTodo} alt='Todo' />
+          <img src={icTodo} alt="Todo" />
         </span>
         <form onSubmit={handleSubmit}>
           <input
-            type='text'
+            type="text"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
-            placeholder='What need to be done?'
+            placeholder="What need to be done?"
           />
         </form>
       </div>
 
-      <div className='todo-content'>
-        <ul className='todo-list'>
+      <div className="todo-content">
+        <ul className="todo-list">
           {filteredTodos.map((todo) => (
             <TodoCard
               todo={todo}
@@ -130,13 +130,13 @@ const TodoWrapper = () => {
           ))}
         </ul>
       </div>
-      <div className='todo-footer'>
+      <div className="todo-footer">
         <span>
           {countUncompleted > 1
             ? `${countUncompleted} items left`
             : `${countUncompleted} item left`}
         </span>
-        <ul className='todo-filter'>
+        <ul className="todo-filter">
           <li
             className={filter === 'all' ? 'filter active' : 'filter'}
             onClick={() => handleFilterChange('all')}
@@ -156,7 +156,7 @@ const TodoWrapper = () => {
             Completed
           </li>
         </ul>
-        <span className='todo-clear-completed' onClick={clearCompleted}>
+        <span className="todo-clear-completed" onClick={clearCompleted}>
           Clear Completed
         </span>
       </div>
