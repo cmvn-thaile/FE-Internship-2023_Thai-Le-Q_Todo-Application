@@ -1,4 +1,4 @@
-import { Todo } from '../type';
+import { Todo } from '../../type';
 
 export const completedTodo = (id: string, todos: Todo[]) => {
   const updatedTodos = todos.map((todo) =>

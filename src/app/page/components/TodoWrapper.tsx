@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useRef, useMemo } from 'react';
-import icTodo from '../assets/ic-todo.svg';
+import icTodo from '../../../assets/ic-todo.svg';
 import { nanoid } from 'nanoid';
 import TodoCard from './TodoCard';
-import { Todo } from '../type';
-import { completedTodo, deleteTodo } from '../services/todo-services';
+import { Todo } from '../../../type';
+import { completedTodo, deleteTodo } from '../../../shared/services/todo-services';
 
 const TodoWrapper = () => {
   //create state for todos and input

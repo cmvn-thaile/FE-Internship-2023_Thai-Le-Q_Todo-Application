@@ -1,6 +1,6 @@
 import React from 'react';
 import './index.css';
-import TodoWrapper from './components/TodoWrapper';
+import TodoWrapper from './app/page/components/TodoWrapper';
 
 function App() {
   return (
