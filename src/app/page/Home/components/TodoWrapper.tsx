@@ -1,14 +1,21 @@
 import React, { useEffect, useState, useRef, useMemo } from 'react';
-import icTodo from '../../../assets/ic-todo.svg';
+
 import { nanoid } from 'nanoid';
 import TodoCard from './TodoCard';
-import { Todo } from '../../../type';
-import { completedTodo, deleteTodo } from '../../../shared/services/todo-services';
+import { Todo } from '../../../../type';
+import {
+  completedTodo,
+  deleteTodo,
+} from '../../../../shared/services/todo-services';
 
-const TodoWrapper = () => {
+interface TodoWrapperProps {
+  todos: Todo[];
+  setTodos: React.Dispatch<React.SetStateAction<Todo[]>>;
+}
+
+const TodoWrapper = ({ todos, setTodos }: TodoWrapperProps) => {
   //create state for todos and input
-  const [todos, setTodos] = React.useState<Todo[]>([]);
-  const [inputValue, setInputValue] = React.useState<string>('');
+
   //create state for editing
   const [editing, setEditing] = useState<string | null>(null);
   const [editText, setEditText] = useState('');
@@ -27,21 +34,6 @@ const TodoWrapper = () => {
     //save data to local storage when todos change
     localStorage.setItem('todos', JSON.stringify(todos));
   }, [todos]);
-
-  //submit form
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (inputValue.trim() !== '') {
-      const newTodo = {
-        id: nanoid(),
-        todoContent: inputValue,
-        isCompleted: false,
-      };
-
-      setTodos([...todos, newTodo]);
-    }
-    setInputValue('');
-  };
 
   //handle completed when click, function take id and return updated todos
   //have isCompleted = true if id match
@@ -98,21 +90,7 @@ const TodoWrapper = () => {
     }
   });
   return (
-    <div className="wrapper">
-      <div className="todo-header">
-        <span>
-          <img src={icTodo} alt="Todo" />
-        </span>
-        <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            placeholder="What need to be done?"
-          />
-        </form>
-      </div>
-
+    <>
       <div className="todo-content">
         <ul className="todo-list">
           {filteredTodos.map((todo) => (
@@ -160,7 +138,7 @@ const TodoWrapper = () => {
           Clear Completed
         </span>
       </div>
-    </div>
+    </>
   );
 };
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import './index.css';
-import TodoWrapper from './app/page/components/TodoWrapper';
+import TodoWrapper from './app/page/Home/components/TodoWrapper';
+import Home  from './app/page/Home';
 
 function App() {
   return (
@@ -11,7 +12,7 @@ function App() {
           📝
         </span>
       </h1>
-      <TodoWrapper />
+      <Home />
     </div>
   );
 }

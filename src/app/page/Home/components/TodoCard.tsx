@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Todo } from '../../../type';
-import icActive from '../../../assets/ic-active.svg';
-import icCompleted from '../../../assets/ic-completed.svg';
-import icDelete from '../../../assets/ic-delete.svg'
+
+import icActive from '../../../../assets/ic-active.svg';
+import icCompleted from '../../../../assets/ic-completed.svg';
+import icDelete from '../../../../assets/ic-delete.svg'
+import { Todo } from '../../../../type';
+
 
 interface Props {
   todo: Todo;
