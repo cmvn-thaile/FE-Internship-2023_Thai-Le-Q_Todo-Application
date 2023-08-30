@@ -1,73 +1,52 @@
 import React, { useEffect, useState, useRef, useMemo } from 'react';
-
+import { useDispatch, useSelector } from 'react-redux';
 import { nanoid } from 'nanoid';
 import TodoCard from './TodoCard';
 import { Todo } from '../../../../type';
 import {
   completedTodo,
-  deleteTodo,
-} from '../../../../shared/services/todo-services';
+  removeAllCompleted,
+} from '../../../../shared/redux/action';
+// import {
+//   completedTodo,
+//   deleteTodo,
+// } from '../../../../shared/services/todo-services';
 
-interface TodoWrapperProps {
-  todos: Todo[];
-  setTodos: React.Dispatch<React.SetStateAction<Todo[]>>;
-}
-
-const TodoWrapper = ({ todos, setTodos }: TodoWrapperProps) => {
+const TodoWrapper = () => {
   //create state for todos and input
-
+  const todos = useSelector((state: any) => state.todos);
+  const dispatch = useDispatch();
   //create state for editing
   const [editing, setEditing] = useState<string | null>(null);
   const [editText, setEditText] = useState('');
   //create state for filter
   const [filter, setFilter] = useState('all');
 
-  useEffect(() => {
-    //get data from local storage
-    const storedTodos = localStorage.getItem('todos');
-    if (storedTodos) {
-      setTodos(JSON.parse(storedTodos));
-    }
-  }, []);
+
 
   useEffect(() => {
     //save data to local storage when todos change
     localStorage.setItem('todos', JSON.stringify(todos));
   }, [todos]);
 
-  //handle completed when click, function take id and return updated todos
-  //have isCompleted = true if id match
-  const handleCompleted = (id: string) => {
-    setTodos(completedTodo(id, todos));
-  };
-  //handle completed when click, function take id and return delete todo
-  //if id match
-  const handleDelete = (id: string) => {
-    setTodos(deleteTodo(id, todos));
-  };
-  //count uncompleted todos
   const countUncompleted = useMemo(() => {
-    return todos.filter((todo) => !todo.isCompleted).length;
+    return todos.filter((todo: Todo) => !todo.isCompleted).length;
   }, [todos]);
 
-  //clear completed todos
-  const clearCompleted = () => {
-    const updatedTodos = todos.filter((todo) => !todo.isCompleted);
-    setTodos(updatedTodos);
-  };
   //double click to edit
   const handleDoubleClick = (id: string) => {
     setEditing(id);
-    setEditText(todos.find((todo) => todo.id === id)?.todoContent || '');
+    setEditText(todos.find((todo: Todo) => todo.id === id)?.todoContent || '');
   };
 
   //check if enter key is pressed, update todos
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
-      const updatedTodos = todos.map((todo) =>
+      const updatedTodos = todos.map((todo: Todo) =>
         todo.id === editing ? { ...todo, todoContent: editText } : todo
       );
-      setTodos(updatedTodos);
+      
+      // setTodos(updatedTodos);
       setEditing(null);
     }
   };
@@ -80,7 +59,7 @@ const TodoWrapper = ({ todos, setTodos }: TodoWrapperProps) => {
     setFilter(newFilter);
   };
 
-  const filteredTodos = todos.filter((todo) => {
+  const filteredTodos = todos.filter((todo: Todo) => {
     if (filter === 'active') {
       return !todo.isCompleted;
     } else if (filter === 'completed') {
@@ -93,15 +72,16 @@ const TodoWrapper = ({ todos, setTodos }: TodoWrapperProps) => {
     <>
       <div className="todo-content">
         <ul className="todo-list">
-          {filteredTodos.map((todo) => (
+          {filteredTodos.map((todo: Todo) => (
             <TodoCard
+              key={todo.id}
               todo={todo}
               editText={editText}
               editing={editing}
               handleEdit={handleEdit}
               setEditing={setEditing}
-              handleDelete={handleDelete}
-              handleCompleted={handleCompleted}
+              // handleDelete={handleDelete}
+              // handleCompleted={handleCompleted}
               handleDoubleClick={handleDoubleClick}
               handleKeyDown={handleKeyDown}
             />
@@ -134,7 +114,10 @@ const TodoWrapper = ({ todos, setTodos }: TodoWrapperProps) => {
             Completed
           </li>
         </ul>
-        <span className="todo-clear-completed" onClick={clearCompleted}>
+        <span
+          className="todo-clear-completed"
+          onClick={() => dispatch(removeAllCompleted())}
+        >
           Clear Completed
         </span>
       </div>

@@ -1,18 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react';
-
+import { useDispatch, useSelector } from 'react-redux';
 import icActive from '../../../../assets/ic-active.svg';
 import icCompleted from '../../../../assets/ic-completed.svg';
-import icDelete from '../../../../assets/ic-delete.svg'
+import icDelete from '../../../../assets/ic-delete.svg';
 import { Todo } from '../../../../type';
-
+import { completedTodo, removeTodo } from '../../../../shared/redux/action';
 
 interface Props {
   todo: Todo;
   editText: string;
   editing: string | null;
   setEditing: React.Dispatch<React.SetStateAction<string | null>>;
-  handleCompleted: (id: string) => void;
-  handleDelete: (id: string) => void;
+  // handleCompleted: (id: string) => void;
+  // handleDelete: (id: string) => void;
   handleDoubleClick: (id: string) => void;
   handleKeyDown: (event: React.KeyboardEvent<HTMLInputElement>) => void;
   handleEdit: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -22,14 +22,30 @@ const TodoCard = ({
   todo,
   editText,
   editing,
-  handleCompleted,
-  handleDelete,
+  // handleCompleted,
+  // handleDelete,
   handleDoubleClick,
   handleKeyDown,
   handleEdit,
   setEditing,
 }: Props) => {
   const [showDelete, setShowDelete] = useState(false);
+  console.log(todo);
+  const dispatch = useDispatch();
+
+  const removeTodoItem = (id: string) => {
+    dispatch(removeTodo(id));
+  }
+
+  const handleCompleted = (id:string) => {
+    dispatch(completedTodo(id));
+
+  };
+
+  
+  // const handleCompleted = () => {
+  //   dispatch(completedTodo(todo.id));
+  // };
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -69,7 +85,7 @@ const TodoCard = ({
   return (
     <>
       <li
-        className='todo-item'
+        className="todo-item"
         key={todo.id}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
@@ -77,17 +93,17 @@ const TodoCard = ({
         <>
           <div>
             <span
-              className='active-icon'
-              onClick={() => handleCompleted(todo.id)}
+              className="active-icon"
+              onClick={()=>handleCompleted(todo.id)}
             >
               <img
                 src={todo.isCompleted ? icCompleted : icActive}
-                alt='todo status'
+                alt="todo status"
               />
             </span>
             {editing === todo.id ? (
               <input
-                type='text'
+                type="text"
                 value={editText}
                 onChange={handleEdit}
                 onKeyDown={handleKeyDown}
@@ -96,7 +112,7 @@ const TodoCard = ({
               />
             ) : (
               <span
-                className='todo-content'
+                className="todo-content"
                 onDoubleClick={() => handleDoubleClick(todo.id)}
               >
                 {todo.todoContent}
@@ -104,8 +120,8 @@ const TodoCard = ({
             )}
           </div>
           {showDelete && (
-            <span className='active-icon' onClick={() => handleDelete(todo.id)}>
-              <img src={icDelete} alt='cancel icon' />
+            <span className="active-icon" onClick={() => removeTodoItem(todo.id)}>
+              <img src={icDelete} alt="cancel icon" />
             </span>
           )}
         </>
