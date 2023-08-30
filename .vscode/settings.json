@@ -1,0 +1,10 @@
+{
+  "[javascript]": {
+    "javascript.preferences.quoteStyle": "single",
+    "typescript.preferences.quoteStyle": "single"
+  },
+  "[typescriptreact]": {
+    "javascript.preferences.quoteStyle": "single",
+    "typescript.preferences.quoteStyle": "single"
+  }
+}
