@@ -175,3 +175,9 @@ img {
   align-items: center;
   padding: 10px 0;
 }
+
+.todo-content .completed {
+  text-decoration: line-through;
+  color: #aaa;
+  font-style: italic;
+}
