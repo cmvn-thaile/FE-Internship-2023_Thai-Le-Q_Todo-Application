@@ -106,7 +106,7 @@ const TodoCard = ({
               />
             ) : (
               <span
-                className="todo-content"
+                className={todo.isCompleted ? 'todo-content completed' : 'todo-content'}
                 onDoubleClick={() => handleDoubleClick(todo.id)}
               >
                 {todo.todoContent}
