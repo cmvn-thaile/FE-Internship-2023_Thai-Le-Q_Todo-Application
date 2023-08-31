@@ -1,10 +1,12 @@
 import { nanoid } from 'nanoid';
 import { Todo } from '../../type';
 import {
+  SET_ALL_COMPLETED,
   SET_COMPLETED,
   TODOS_ADD,
   TODOS_REMOVE,
   TODOS_REMOVE_ALL_COMPLETED,
+  UPDATE_TODO,
 } from './type';
 import { get } from 'http';
 import {
@@ -31,12 +33,12 @@ export const todoReducer = (state: State = initialState, action: Action) => {
       return {
         ...state,
         todos: [
-          ...state.todos,
           {
             id: nanoid(),
             todoContent: action.payload.todoContent,
             isCompleted: false,
           },
+          ...state.todos,
         ],
       };
     case SET_COMPLETED:
@@ -52,11 +54,36 @@ export const todoReducer = (state: State = initialState, action: Action) => {
           return todo;
         }),
       };
+
+    case UPDATE_TODO:
+      return {
+        ...state,
+        todos: state.todos.map((todo) => {
+          if (todo.id === action.payload.id) {
+            return {
+              ...todo,
+              todoContent: action.payload.todoContent,
+            };
+          }
+          return todo;
+        }),
+      };
     case TODOS_REMOVE:
       return {
         ...state,
         todos: state.todos.filter((todo) => todo.id !== action.payload.id),
       };
+
+    case SET_ALL_COMPLETED:
+      return{
+        ...state,
+        todos: state.todos.map((todo) => {
+          return {
+            ...todo,
+            isCompleted: true,
+          };
+        }),
+      }
 
     case TODOS_REMOVE_ALL_COMPLETED:
       return {

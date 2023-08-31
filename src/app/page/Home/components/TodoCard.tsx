@@ -22,15 +22,14 @@ const TodoCard = ({
   todo,
   editText,
   editing,
-  // handleCompleted,
-  // handleDelete,
+
   handleDoubleClick,
   handleKeyDown,
   handleEdit,
   setEditing,
 }: Props) => {
   const [showDelete, setShowDelete] = useState(false);
-  console.log(todo);
+
   const dispatch = useDispatch();
 
   const removeTodoItem = (id: string) => {
@@ -41,11 +40,6 @@ const TodoCard = ({
     dispatch(completedTodo(id));
 
   };
-
-  
-  // const handleCompleted = () => {
-  //   dispatch(completedTodo(todo.id));
-  // };
 
   const inputRef = useRef<HTMLInputElement>(null);
 

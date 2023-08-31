@@ -6,7 +6,9 @@ import { Todo } from '../../../../type';
 import {
   completedTodo,
   removeAllCompleted,
+  updateTodo,
 } from '../../../../shared/redux/action';
+import { text } from 'stream/consumers';
 // import {
 //   completedTodo,
 //   deleteTodo,
@@ -21,8 +23,6 @@ const TodoWrapper = () => {
   const [editText, setEditText] = useState('');
   //create state for filter
   const [filter, setFilter] = useState('all');
-
-
 
   useEffect(() => {
     //save data to local storage when todos change
@@ -42,11 +42,7 @@ const TodoWrapper = () => {
   //check if enter key is pressed, update todos
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
-      const updatedTodos = todos.map((todo: Todo) =>
-        todo.id === editing ? { ...todo, todoContent: editText } : todo
-      );
-      
-      // setTodos(updatedTodos);
+      dispatch(updateTodo(editing, editText));
       setEditing(null);
     }
   };
@@ -80,47 +76,47 @@ const TodoWrapper = () => {
               editing={editing}
               handleEdit={handleEdit}
               setEditing={setEditing}
-              // handleDelete={handleDelete}
-              // handleCompleted={handleCompleted}
               handleDoubleClick={handleDoubleClick}
               handleKeyDown={handleKeyDown}
             />
           ))}
         </ul>
       </div>
-      <div className="todo-footer">
-        <span>
-          {countUncompleted > 1
-            ? `${countUncompleted} items left`
-            : `${countUncompleted} item left`}
-        </span>
-        <ul className="todo-filter">
-          <li
-            className={filter === 'all' ? 'filter active' : 'filter'}
-            onClick={() => handleFilterChange('all')}
+      {todos.length > 0 && (
+        <div className="todo-footer">
+          <span>
+            {countUncompleted > 1
+              ? `${countUncompleted} items left`
+              : `${countUncompleted} item left`}
+          </span>
+          <ul className="todo-filter">
+            <li
+              className={filter === 'all' ? 'filter active' : 'filter'}
+              onClick={() => handleFilterChange('all')}
+            >
+              All
+            </li>
+            <li
+              className={filter === 'active' ? 'filter active' : 'filter'}
+              onClick={() => handleFilterChange('active')}
+            >
+              Active
+            </li>
+            <li
+              className={filter === 'completed' ? 'filter active' : 'filter'}
+              onClick={() => handleFilterChange('completed')}
+            >
+              Completed
+            </li>
+          </ul>
+          <span
+            className="todo-clear-completed"
+            onClick={() => dispatch(removeAllCompleted())}
           >
-            All
-          </li>
-          <li
-            className={filter === 'active' ? 'filter active' : 'filter'}
-            onClick={() => handleFilterChange('active')}
-          >
-            Active
-          </li>
-          <li
-            className={filter === 'completed' ? 'filter active' : 'filter'}
-            onClick={() => handleFilterChange('completed')}
-          >
-            Completed
-          </li>
-        </ul>
-        <span
-          className="todo-clear-completed"
-          onClick={() => dispatch(removeAllCompleted())}
-        >
-          Clear Completed
-        </span>
-      </div>
+            Clear Completed
+          </span>
+        </div>
+      )}
     </>
   );
 };

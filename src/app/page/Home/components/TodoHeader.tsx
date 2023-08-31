@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Todo } from '../../../../type';
 import icTodo from '../../../../assets/ic-todo.svg';
 import { nanoid } from 'nanoid';
-import { counterAdd } from '../../../../shared/redux/action';
+import { completedAllTodo, counterAdd } from '../../../../shared/redux/action';
 import {
   StorageKey,
   getFromLocalStorage,
@@ -40,7 +40,7 @@ const TodoHeader = () => {
   return (
     <>
       <div className="todo-header">
-        <span>
+        <span onClick={()=>dispatch(completedAllTodo())}>
           <img src={icTodo} alt="Todo" />
         </span>
         <form onSubmit={handleSubmit}>
